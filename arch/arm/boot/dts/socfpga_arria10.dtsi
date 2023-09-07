@@ -29,7 +29,7 @@
 		};
 	};
 
-	pmu: pmu@ff111000 {
+	pmu: pmu@ff111000 {  
 		compatible = "arm,cortex-a9-pmu";
 		interrupt-parent = <&intc>;
 		interrupts = <0 124 4>, <0 125 4>;
@@ -73,11 +73,13 @@
 					     <0 90 IRQ_TYPE_LEVEL_HIGH>,
 					     <0 91 IRQ_TYPE_LEVEL_HIGH>;
 				#dma-cells = <1>;
+				#dma-channel = <8>;  
+				#dma-requests = <32>;  
 				clocks = <&l4_main_clk>;
 				clock-names = "apb_pclk";
 				resets = <&rst DMA_RESET>, <&rst DMA_OCP_RESET>;
 				reset-names = "dma", "dma-ocp";
-				microcode-cached;
+				microcode-cached;  
 			};
 		};
 
@@ -89,7 +91,7 @@
 			fpga-mgr = <&fpga_mgr>;
 		};
 
-		clkmgr@ffd04000 {
+		clkmgr: clkmgr@ffd04000 {
 				compatible = "altr,clk-mgr";
 				reg = <0xffd04000 0x1000>;
 
@@ -612,7 +614,8 @@
 		};
 
 		spi0: spi@ffda4000 {
-			compatible = "snps,dw-apb-ssi";
+			compatible = "altr,socfpga-arria10-spi",
+				     "snps,dw-apb-ssi-3.22a", "snps,dw-apb-ssi";
 			#address-cells = <1>;
 			#size-cells = <0>;
 			reg = <0xffda4000 0x100>;
@@ -621,12 +624,13 @@
 			/*32bit_access;*/
 			clocks = <&spi_m_clk>;
 			resets = <&rst SPIM0_RESET>;
-			reset-names = "spi";
+			reset-names = "spi";  
 			status = "disabled";
 		};
 
 		spi1: spi@ffda5000 {
-			compatible = "snps,dw-apb-ssi";
+			compatible = "altr,socfpga-arria10-spi",
+				     "snps,dw-apb-ssi-3.22a", "snps,dw-apb-ssi";
 			#address-cells = <1>;
 			#size-cells = <0>;
 			reg = <0xffda5000 0x100>;
@@ -637,7 +641,7 @@
 			rx-dma-channel = <&pdma 17>;
 			clocks = <&spi_m_clk>;
 			resets = <&rst SPIM1_RESET>;
-			reset-names = "spi";
+			reset-names = "spi";  
 			status = "disabled";
 		};
 
@@ -646,7 +650,7 @@
 			reg = <0xffcfb100 0x80>;
 		};
 
-		L2: cache-controller@fffff000 {
+		L2: cache-controller@fffff000 {  
 			compatible = "arm,pl310-cache";
 			reg = <0xfffff000 0x1000>;
 			interrupts = <0 18 IRQ_TYPE_LEVEL_HIGH>;
@@ -737,7 +741,7 @@
 					     <37 IRQ_TYPE_LEVEL_HIGH>;
 			};
 
-			sdmmca-ecc@ff8c2c00 {
+			sdmmca-ecc@ff8c2c00 {  
 				compatible = "altr,socfpga-sdmmc-ecc";
 				reg = <0xff8c2c00 0x400>;
 				altr,ecc-parent = <&mmc>;
@@ -782,6 +786,8 @@
 
 		rst: rstmgr@ffd05000 {
 			#reset-cells = <1>;
+			#address-cells = <1>;
+			#size-cells = <1>;
 			compatible = "altr,rst-mgr";
 			reg = <0xffd05000 0x100>;
 			altr,modrst-offset = <0x20>;
@@ -839,7 +845,7 @@
 		timer3: timer3@ffd00100 {
 			compatible = "snps,dw-apb-timer";
 			interrupts = <0 118 IRQ_TYPE_LEVEL_HIGH>;
-			reg = <0xffd00100 0x100>;
+			reg = <0xffd01000 0x100>;  
 			clocks = <&l4_sys_free_clk>;
 			clock-names = "timer";
 			resets = <&rst L4SYSTIMER1_RESET>;
